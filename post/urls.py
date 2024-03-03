@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from .views import PostDetailView
 
 # 1. postID로 게시글 조회
 # 2. boardID로 게시글 목록 조회, postID 몇 번부터 몇개 범위 지정 (페이징)
