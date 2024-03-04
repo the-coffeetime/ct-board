@@ -3,8 +3,8 @@ from django.db import models
 
 class Boards(models.Model):
     boardID = models.AutoField(db_column='boardID', primary_key=True)
-    fieldID = models.ForeignKey('Fields', models.CASCADE, db_column='fieldID')
-    jobID = models.ForeignKey('Jobs', models.CASCADE, db_column='jobID')
+    fieldID = models.ForeignKey('field.Fields', models.CASCADE, db_column='fieldID')
+    jobID = models.ForeignKey('job.Jobs', models.CASCADE, db_column='jobID')
     name = models.CharField(max_length=255)
 
     class Meta:

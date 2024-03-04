@@ -1,12 +1,10 @@
 from django.db import models
 
-from ct_board.board.models import Boards
-
 
 class Posts(models.Model):
     objects = models.Manager()
     postID = models.AutoField(db_column='postID', primary_key=True)
-    boardID = models.ForeignKey(Boards, models.CASCADE, db_column='boardID')
+    boardID = models.ForeignKey('board.Boards', models.CASCADE, db_column='boardID')
     userID = models.PositiveBigIntegerField(db_column='userID')
     title = models.CharField(max_length=255)
     content = models.TextField()

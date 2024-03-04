@@ -1,10 +1,9 @@
 from django.contrib import admin
 
+from field.models import Fields
+from job.models import Jobs
 # Register your models here.
-from .models import Fields, Jobs, Boards, Posts, Comments
+from .models import Boards, BoardCreationRequest
 
-admin.site.register(Fields)
-admin.site.register(Jobs)
 admin.site.register(Boards)
-admin.site.register(Posts)
-admin.site.register(Comments)
+admin.site.register(BoardCreationRequest)

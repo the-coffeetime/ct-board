@@ -3,7 +3,7 @@ from django.db import models
 
 class Jobs(models.Model):
     jobID = models.AutoField(db_column='jobID', primary_key=True)
-    fieldID = models.ForeignKey('Fields', models.CASCADE, db_column='fieldID')
+    fieldID = models.ForeignKey('field.Fields', models.CASCADE, db_column='fieldID')
     name = models.CharField(max_length=255)
 
     class Meta:
