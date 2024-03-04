@@ -1,6 +1,6 @@
 from django.db import models
 
-from board.models import Boards
+from ct_board.board.models import Boards
 
 
 class Posts(models.Model):
