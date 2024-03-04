@@ -4,6 +4,7 @@ from board.models import Boards
 
 
 class Posts(models.Model):
+    objects = models.Manager()
     postID = models.AutoField(db_column='postID', primary_key=True)
     boardID = models.ForeignKey(Boards, models.CASCADE, db_column='boardID')
     userID = models.PositiveBigIntegerField(db_column='userID')
