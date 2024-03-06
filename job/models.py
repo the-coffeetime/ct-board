@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Jobs(models.Model):
+    objects = models.Manager()
     jobID = models.AutoField(db_column='jobID', primary_key=True)
     fieldID = models.ForeignKey('field.Fields', models.CASCADE, db_column='fieldID')
     name = models.CharField(max_length=255)
@@ -13,6 +14,7 @@ class Jobs(models.Model):
 
 
 class JobCreationRequest(models.Model):
+    objects = models.Manager()
     userID = models.PositiveBigIntegerField(db_column='userID')
     fieldName = models.CharField(db_column='fieldName', max_length=255)
     jobName = models.CharField(db_column='jobName', max_length=255)

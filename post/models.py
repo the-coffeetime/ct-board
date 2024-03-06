@@ -22,6 +22,7 @@ class Posts(models.Model):
 
 
 class PostFollowers(models.Model):
+    objects = models.Manager()
     postID = models.ForeignKey('Posts', models.CASCADE, db_column='postID')
     userID = models.PositiveBigIntegerField(db_column='userID')
 

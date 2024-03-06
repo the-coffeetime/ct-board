@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Comments(models.Model):
+    objects = models.Manager()
     commentID = models.AutoField(db_column='commentID', primary_key=True)
     postID = models.ForeignKey('post.Posts', models.CASCADE, db_column='postID')
     userID = models.PositiveBigIntegerField(db_column='userID')
@@ -19,6 +20,7 @@ class Comments(models.Model):
 
 
 class CommentFollowers(models.Model):
+    objects = models.Manager()
     commentID = models.ForeignKey('Comments', models.CASCADE, db_column='commentID')
     userID = models.PositiveBigIntegerField(db_column='userID')
 
