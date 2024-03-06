@@ -43,6 +43,12 @@ class PostDetailView(APIView):
         elif post_id is not None:
             try:
                 post = Posts.objects.get(postID=post_id)
+                try:
+                    post.viewCount += 1
+                    post.save(update_fields=['viewCount'])
+                except Exception as e:
+                    # TODO: 동시성 제어, 메모리 캐싱 후 업데이트 배치
+                    pass
                 if post:
                     serializer = PostSerializer(post)
                     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -63,12 +69,17 @@ class PostDetailView(APIView):
         except Exception as e:
             return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def put(self, request):
+    def put(self, request: rest_framework.request.Request):
         try:
+            post_id_value = request.data.get('postID')
+            if post_id_value is None:
+                return Response({'error': 'postID field is required'}, status=status.HTTP_400_BAD_REQUEST)
+            post_id = int(post_id_value)
             serializer = PostSerializer(data=request.data, partial=True)
             if serializer.is_valid():
-                post_id = serializer.validated_data.get('postID')
                 post = Posts.objects.get(postID=post_id)
+                if post.userID != int(request.data['userID']):
+                    return Response({'error': 'User does not have permission to edit this post'}, status=status.HTTP_403_FORBIDDEN)
 
                 serializer = PostSerializer(post, data=request.data, partial=True)
                 if serializer.is_valid():
@@ -76,10 +87,12 @@ class PostDetailView(APIView):
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ValueError:
+            return Response({'error': 'Invalid postID value'}, status=status.HTTP_400_BAD_REQUEST)
         except Posts.DoesNotExist:
             return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': 'Internal server error', 'msg': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request):
         try:

@@ -9,5 +9,4 @@ class PostSerializer(serializers.ModelSerializer):
         read_only_fields = ('postID',)  # postID는 자동으로 생성되므로 읽기 전용으로 설정
 
     def validate(self, data):
-        # TODO
         return data
