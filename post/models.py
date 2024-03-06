@@ -7,14 +7,14 @@ class Posts(models.Model):
     boardID = models.ForeignKey('board.Boards', models.CASCADE, db_column='boardID')
     userID = models.PositiveBigIntegerField(db_column='userID')
     title = models.CharField(max_length=255)
-    content = models.TextField()
+    content = models.TextField(max_length=10000)
     pictureUrl = models.CharField(db_column='pictureURL', max_length=255, blank=True, null=True)
-    viewCount = models.IntegerField()
-    likes = models.IntegerField()
-    reports = models.IntegerField()
-    anonymous = models.BooleanField()
-    createdAt = models.DateTimeField()
-    updatedAt = models.DateTimeField()
+    viewCount = models.IntegerField(default=0)
+    likes = models.IntegerField(default=0)
+    reports = models.IntegerField(default=0)
+    anonymous = models.BooleanField(default=0)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
