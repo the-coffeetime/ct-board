@@ -6,13 +6,13 @@ class Comments(models.Model):
     commentID = models.AutoField(db_column='commentID', primary_key=True)
     postID = models.ForeignKey('post.Posts', models.CASCADE, db_column='postID')
     userID = models.PositiveBigIntegerField(db_column='userID')
-    content = models.TextField()
+    content = models.TextField(max_length=2000)
     parentCommentID = models.IntegerField(db_column='parentCommentID', blank=True, null=True)
-    anonymous = models.BooleanField()
-    likes = models.IntegerField()
-    reports = models.IntegerField()
-    createdAt = models.DateTimeField(db_column='createdAt')
-    updatedAt = models.DateTimeField(db_column='updatedAt')
+    anonymous = models.BooleanField(default=False)
+    likes = models.IntegerField(default=0)
+    reports = models.IntegerField(default=0)
+    createdAt = models.DateTimeField(db_column='createdAt', auto_now_add=True)
+    updatedAt = models.DateTimeField(db_column='updatedAt', auto_now=True)
 
     class Meta:
         managed = False

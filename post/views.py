@@ -95,15 +95,17 @@ class PostDetailView(APIView):
             return Response({'error': 'Internal server error', 'msg': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request):
+        post_id = request.query_params.get('postID')
+        if post_id is None:
+            return Response({'error': 'postID required'}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            post_id = int(request.query_params.get('postID'))
-            if post_id is None:
-                return Response({'error': 'postID required'}, status=status.HTTP_400_BAD_REQUEST)
+            post_id = int(post_id)
+        except ValueError:
+            return Response({'error': 'Invalid postID'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
             post = Posts.objects.get(postID=post_id)
             post.delete()
             return Response({'message': 'Post deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
-        except ValueError:
-            return Response({'error': 'Invalid postID'}, status=status.HTTP_400_BAD_REQUEST)
         except Posts.DoesNotExist:
             return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
@@ -112,16 +114,19 @@ class PostDetailView(APIView):
 
 @api_view(['GET'])
 def get_followers(request: rest_framework.request.Request):
+    post_id = request.query_params.get('postID')
+    if post_id is None:
+        return Response({'error': 'postID required'}, status=status.HTTP_400_BAD_REQUEST)
+
     try:
-        post_id = int(request.query_params.get('postID'))
-        if post_id is None:
-            return Response({'error': 'postID required'}, status=status.HTTP_400_BAD_REQUEST)
+        post_id = int(post_id)
+    except ValueError:
+        return Response({'error': 'Invalid postID'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
         followers = PostFollowers.objects.filter(postID=post_id)
         follower_list = []
         for follower in followers:
             follower_list.append(follower.userID)
         return Response({'followers': follower_list}, status=status.HTTP_200_OK)
-    except ValueError:
-        return Response({'error': 'Invalid postID'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

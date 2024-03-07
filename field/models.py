@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Fields(models.Model):
+    objects = models.Manager()
     fieldID = models.AutoField(db_column='fieldID', primary_key=True)
     name = models.CharField(max_length=255, unique=True)
 

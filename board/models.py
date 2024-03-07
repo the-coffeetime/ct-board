@@ -26,3 +26,15 @@ class BoardCreationRequest(models.Model):
         managed = False
         db_table = 'boardCreationRequest'
         unique_together = (('userID', 'fieldName', 'jobName', 'boardName'),)
+
+
+class BoardFollowers(models.Model):
+    objects = models.Manager()
+    boardID = models.ForeignKey(Boards, models.CASCADE, db_column='boardID')
+    userID = models.PositiveBigIntegerField(db_column='userID')
+    createdAt = models.DateTimeField(db_column='createdAt', auto_now_add=True)
+
+    class Meta:
+        managed = False
+        db_table = 'boardFollowers'
+        unique_together = (('boardID', 'userID'),)
