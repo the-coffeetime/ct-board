@@ -10,5 +10,5 @@ from . import views
 # 6. userID로 following comment 목록 조회 - /api/comment/followers?userID=1
 urlpatterns = [
     path('', views.CommentDetailView.as_view(), name='commentDetailView'),
-    path('followers/', views.get_followers, name='getFollowers'),
+    path('followers', views.get_followers, name='getFollowers'),
 ]

@@ -13,5 +13,5 @@ from .views import PostDetailView
 # 6. postID로 follower userID 목록 조회 - /api/post/followers?postID=1
 urlpatterns = [
     path('', PostDetailView.as_view(), name='postDetailView'),
-    path('followers/', views.get_followers, name='getFollowers')
+    path('followers', views.get_followers, name='getFollowers')
 ]

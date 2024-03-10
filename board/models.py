@@ -30,6 +30,7 @@ class BoardCreationRequest(models.Model):
 
 class BoardFollowers(models.Model):
     objects = models.Manager()
+    id = models.AutoField(auto_created=True, primary_key=True, db_column='id')
     boardID = models.ForeignKey(Boards, models.CASCADE, db_column='boardID')
     userID = models.PositiveBigIntegerField(db_column='userID')
     createdAt = models.DateTimeField(db_column='createdAt', auto_now_add=True)

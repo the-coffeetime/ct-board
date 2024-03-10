@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from board.models import Boards, BoardFollowers
-from board.serializers import BoardSerializer
+from board.serializers import BoardSerializer, BoardFollowerSerializer
 
 
 class BoardDetailView(APIView):
@@ -50,7 +50,11 @@ def get_followers(request: rest_framework.request.Request):
     except ValueError:
         return Response({'error': 'Invalid boardID'}, status=status.HTTP_400_BAD_REQUEST)
     try:
-        followers = BoardFollowers.objects.filter(postID=board_id)
-        return Response(followers, status=status.HTTP_200_OK)
+        followers = BoardFollowers.objects.filter(boardID=board_id)
+        follower_list = []
+        for follower in followers:
+            follower_list.append(follower.userID)
+        return Response({'followers': follower_list}, status=status.HTTP_200_OK)
     except Exception as e:
+        print(e)
         return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

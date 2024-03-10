@@ -7,6 +7,6 @@ from .views import BoardDetailView
 # 2. job 단위 board 목록 조회 - /api/board?jobID=1
 # 3. boardID로 follower userID 목록 조회 - /api/board/followers?boardID=1
 urlpatterns = [
-    path('', BoardDetailView.as_view, name='boardDetailView'),
-    path('followers/', views.get_followers, name='getFollowers')
+    path('', BoardDetailView.as_view(), name='boardDetailView'),
+    path('followers', views.get_followers, name='getFollowers')
 ]

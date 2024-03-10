@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Comments
+from .models import Comments, CommentFollowers
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -7,6 +7,16 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comments
         fields = '__all__'  # 모든 필드를 포함하도록 설정
         read_only_fields = ('commentID',)  # commentID는 자동으로 생성되므로 읽기 전용으로 설정
+
+    def validate(self, data):
+        return data
+
+
+class CommentFollowerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommentFollowers
+        fields = '__all__'
+        read_only_fields = ('id',)
 
     def validate(self, data):
         return data

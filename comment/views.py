@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from comment.models import Comments, CommentFollowers
-from comment.serializers import CommentSerializer
+from comment.serializers import CommentSerializer, CommentFollowerSerializer
 
 
 class CommentDetailView(APIView):
@@ -66,8 +66,8 @@ def get_followers(request: rest_framework.request.Request):
         try:
             followers = CommentFollowers.objects.filter(commentID=comment_id)
             follower_list = []
-            for comment in followers:
-                follower_list.append(comment.userID)
+            for follower in followers:
+                follower_list.append(follower.userID)
             return Response({'followers': follower_list}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -79,11 +79,13 @@ def get_followers(request: rest_framework.request.Request):
             return Response({'error': 'Invalid userID'}, status=status.HTTP_400_BAD_REQUEST)
         try:
             comments = CommentFollowers.objects.filter(userID=user_id)
+            serializer = CommentFollowerSerializer(comments, many=True)
             comment_list = []
-            for comment in comments:
-                comment_list.append(comment.commentID)
+            for comment in serializer.data:
+                comment_list.append(comment['commentID'])
             return Response({'comments': comment_list}, status=status.HTTP_200_OK)
         except Exception as e:
+            print(e)
             return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     else:

@@ -21,6 +21,7 @@ class Comments(models.Model):
 
 class CommentFollowers(models.Model):
     objects = models.Manager()
+    id = models.AutoField(auto_created=True, primary_key=True, db_column='id')
     commentID = models.ForeignKey('Comments', models.CASCADE, db_column='commentID')
     userID = models.PositiveBigIntegerField(db_column='userID')
 
