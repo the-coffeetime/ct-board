@@ -1,22 +1,28 @@
 import os
+
 import django
+from rest_framework import status
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ct_board.settings")
 django.setup()
 
-from django.test import TestCase
+from rest_framework.test import APITestCase, APIClient
 from django.urls import reverse
 from field.models import Fields
 
 
-class FieldAPITestCase(TestCase):
+class FieldAPITestCase(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+
     @classmethod
     def setUpTestData(cls):
         cls.field_model = Fields.objects.create(
-            name='Test Field'
+            name='Test Field',
         )
 
     def test_get_field(self):
         url = reverse('getFieldInfo')
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

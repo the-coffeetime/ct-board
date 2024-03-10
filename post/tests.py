@@ -1,12 +1,17 @@
-from django.test import TestCase
+import os
+import django
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ct_board.settings")
+django.setup()
 from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APIClient, APITestCase
+
 from board.models import Boards
 from .models import Posts
-from rest_framework import status
-from rest_framework.test import APIClient
 
 
-class PostsAPITestCase(TestCase):
+class PostsAPITestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
         self.board = Boards.objects.create(

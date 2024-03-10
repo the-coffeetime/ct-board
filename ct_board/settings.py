@@ -9,9 +9,15 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import sys
 from pathlib import Path
 import os
+import environ
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,17 +85,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ct_board.wsgi.application'
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'USER': os.environ.get('DATABASE_USER'),
-        'PASSWORD': os.environ.get('DATABASE_PASS'),
-        'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
-        'PORT': os.environ.get('DATABASE_PORT', '3306'),
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASS'),
+        'HOST': env('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT'),
     }
 }
+
+# if 'test' in sys.argv or 'test_coverage' in sys.argv:  # 테스트 명령어를 확인
+#     DATABASES['default'] = {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': ':memory:',  # SQLite 인메모리 데이터베이스 사용
+#     }
+    # TEST_RUNNER = 'ct_board.UnManagedModelTestRunner.UnManagedModelTestRunner'
+    #
+    # MIGRATION_MODULES = {
+    #     'app': app for app in INSTALLED_APPS
+    # }
+
+    # MIGRATION_MODULES = {app: None for app in INSTALLED_APPS}  # 마이그레이션 모듈 비활성화
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
